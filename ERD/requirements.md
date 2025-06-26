@@ -25,6 +25,7 @@
 - `message` is sent by a `user`
 - `message` is recieved by `user`
 
+### ER-Diagram
 ![ER-Diagram](ER-Diagram.png)
 
 

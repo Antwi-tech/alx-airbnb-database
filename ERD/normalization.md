@@ -44,4 +44,7 @@ After these transformations every non‑key column depends **only** on the key, 
 | **MESSAGES** | message_id | sender_id ↠ USERS, recipient_id ↠ USERS, message_body, sent_at | Private messages |
 | **REVIEWS** | review_id | property_id ↠ PROPERTIES, reviewer_id ↠ USERS, rating, comment, created_at | Feedback after stay |
 
+
+## Normalised 
+
 ![Normalised](Normalised-er.png)
