@@ -57,13 +57,29 @@ LEFT JOIN reviews ON properties.property_id = reviews.property_id;
 
 MySQL does **not** support `FULL OUTER JOIN`. To mimic its behavior, combine a `LEFT JOIN` and a `RIGHT JOIN` using `UNION`.
 
-### Query:
+## Query
+
 ```sql
+-- LEFT JOIN: All bookings with user info if available
+SELECT users.*, bookings.*
+FROM bookings
+LEFT JOIN users ON users.user_id = bookings.guest_id
+
+UNION
+
+-- RIGHT JOIN: All users with booking info if available
 SELECT users.*, bookings.*
 FROM users
-FULL OUTER JOIN bookings ON users.user_id = bookings.guest_id;
+RIGHT JOIN bookings ON users.user_id = bookings.guest_id;
+
+--  in postgresql
+SELECT users.*, bookings.*
+FROM users
+FULL OUTER JOIN bookings 
+ON users.user_id = bookings.guest_id;
 
 ```
+
 
 ### ✅ Purpose:
 - Returns **all users** and **all bookings**:
