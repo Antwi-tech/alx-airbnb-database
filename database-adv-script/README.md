@@ -59,17 +59,10 @@ MySQL does **not** support `FULL OUTER JOIN`. To mimic its behavior, combine a `
 
 ### Query:
 ```sql
--- LEFT JOIN: All bookings with user info if available
-SELECT users.*, bookings.*
-FROM bookings
-LEFT JOIN users ON users.user_id = bookings.guest_id
-
-UNION
-
--- RIGHT JOIN: All users with booking info if available
 SELECT users.*, bookings.*
 FROM users
-RIGHT JOIN bookings ON users.user_id = bookings.guest_id;
+FULL OUTER JOIN bookings ON users.user_id = bookings.guest_id;
+
 ```
 
 ### ✅ Purpose:
