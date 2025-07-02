@@ -29,6 +29,8 @@ INNER JOIN bookings ON users.user_id = bookings.guest_id;
 - Each row contains the user's first name and the ID used in the booking.
 - If a user **has no bookings**, they are **excluded**.
 
+**image**
+![inner-join](images/inner-join.png)
 
 ## 2. LEFT JOIN Properties to Reviews
 
@@ -46,6 +48,9 @@ LEFT JOIN reviews ON properties.property_id = reviews.property_id;
 ### What You Get:
 - A list of property names, their host IDs, and any associated reviews.
 - Useful for identifying properties that haven't been reviewed yet.
+
+**image**
+![left-join](images/left-join.png)
 
 
 ## 3. Simulate FULL OUTER JOIN (Not Natively Supported in MySQL)
@@ -76,6 +81,8 @@ RIGHT JOIN bookings ON users.user_id = bookings.guest_id;
 - A complete picture of user-booking relationships.
 - Helps spot orphaned bookings or inactive users.
 
+**image**
+![full-join](images/full-join.png)
 
 ## 📌 Summary of JOIN Types Used
 
