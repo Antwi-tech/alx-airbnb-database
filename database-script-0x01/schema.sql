@@ -1,9 +1,9 @@
-create database Airbnb;
-use database Airbnb
+CREATE DATABASE Airbnb;
+USE Airbnb;
 
 -- USERS TABLE
 CREATE TABLE users (
-    user_id UUID PRIMARY KEY,
+    user_id CHAR(36) PRIMARY KEY,
     first_name VARCHAR(100),
     last_name VARCHAR(100),
     email VARCHAR(255) UNIQUE NOT NULL,
@@ -20,7 +20,7 @@ CREATE TABLE roles (
 
 -- USER_ROLE TABLE (Many-to-Many)
 CREATE TABLE user_role (
-    user_id UUID,
+    user_id CHAR(36),
     role_id INT,
     PRIMARY KEY (user_id, role_id),
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
@@ -29,8 +29,8 @@ CREATE TABLE user_role (
 
 -- PROPERTIES TABLE
 CREATE TABLE properties (
-    property_id UUID PRIMARY KEY,
-    host_id UUID NOT NULL,
+    property_id CHAR(36) PRIMARY KEY,
+    host_id CHAR(36) NOT NULL,
     name VARCHAR(255) NOT NULL,
     description TEXT,
     location VARCHAR(255),
@@ -50,9 +50,9 @@ CREATE TABLE booking_status (
 
 -- BOOKINGS TABLE
 CREATE TABLE bookings (
-    booking_id UUID PRIMARY KEY,
-    property_id UUID NOT NULL,
-    guest_id UUID NOT NULL,
+    booking_id CHAR(36) PRIMARY KEY,
+    property_id CHAR(36) NOT NULL,
+    guest_id CHAR(36) NOT NULL,
     start_date DATE NOT NULL,
     end_date DATE NOT NULL,
     status_id INT NOT NULL,
@@ -68,9 +68,9 @@ CREATE INDEX idx_bookings_status_id ON bookings(status_id);
 
 -- MESSAGES TABLE
 CREATE TABLE messages (
-    message_id UUID PRIMARY KEY,
-    sender_id UUID NOT NULL,
-    recipient_id UUID NOT NULL,
+    message_id CHAR(36) PRIMARY KEY,
+    sender_id CHAR(36) NOT NULL,
+    recipient_id CHAR(36) NOT NULL,
     message_body TEXT NOT NULL,
     sent_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (sender_id) REFERENCES users(user_id) ON DELETE CASCADE,
@@ -82,9 +82,9 @@ CREATE INDEX idx_messages_recipient_id ON messages(recipient_id);
 
 -- REVIEWS TABLE
 CREATE TABLE reviews (
-    review_id UUID PRIMARY KEY,
-    property_id UUID NOT NULL,
-    reviewer_id UUID NOT NULL,
+    review_id CHAR(36) PRIMARY KEY,
+    property_id CHAR(36) NOT NULL,
+    reviewer_id CHAR(36) NOT NULL,
     rating INT NOT NULL CHECK (rating BETWEEN 1 AND 5),
     comment TEXT,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -103,8 +103,8 @@ CREATE TABLE payment_method (
 
 -- PAYMENTS TABLE
 CREATE TABLE payments (
-    payment_id UUID PRIMARY KEY,
-    booking_id UUID NOT NULL,
+    payment_id CHAR(36) PRIMARY KEY,
+    booking_id CHAR(36) NOT NULL,
     amount DECIMAL(10, 2) NOT NULL CHECK (amount >= 0),
     payment_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     method_id INT NOT NULL,
@@ -114,3 +114,59 @@ CREATE TABLE payments (
 
 CREATE INDEX idx_payments_booking_id ON payments(booking_id);
 CREATE INDEX idx_payments_method_id ON payments(method_id);
+
+-- DUMMY DATA
+INSERT INTO users (user_id, first_name, last_name, email, password_hash, phone_number)
+VALUES
+  ('uuid-551', 'Alice', 'Smith', 'alice@gmail.com', '##4jw', '0554389234'),
+  ('uuid-552', 'Steve', 'Johnson', 'stejohn@gmail.com', '33na', '0237965420'),
+  ('uuid-553', 'Kathy', 'Agyeman', 'kagyeman@gmail.com', 'jsk', '0279722793');
+
+INSERT INTO roles (role_id, role_name)
+VALUES
+  (1, 'Admin'),
+  (2, 'Host'),
+  (3, 'Guest');
+
+INSERT INTO user_role (user_id, role_id)
+VALUES
+  ('uuid-551', 1),
+  ('uuid-552', 2),
+  ('uuid-553', 3);
+
+INSERT INTO properties (property_id, host_id, name, description, location, price_per_night)
+VALUES
+  ('uuid-441', 'uuid-551', 'Seaside Villa', 'A cozy beachfront villa.', 'Cape Coast', 150.00),
+  ('uuid-442', 'uuid-552', 'City Apartment', 'Modern apartment in downtown.', 'Accra', 95.00);
+
+INSERT INTO booking_status (status_id, status_name)
+VALUES
+  (1, 'Pending'),
+  (2, 'Confirmed'),
+  (3, 'Cancelled');
+
+INSERT INTO bookings (booking_id, property_id, guest_id, start_date, end_date, status_id)
+VALUES
+  ('uuid-331', 'uuid-441', 'uuid-553', '2025-07-10', '2025-07-15', 2),
+  ('uuid-332', 'uuid-442', 'uuid-553', '2025-08-01', '2025-08-05', 1);
+
+INSERT INTO messages (message_id, sender_id, recipient_id, message_body)
+VALUES
+  ('uuid-message-1', 'uuid-553', 'uuid-552', 'Hi, is the villa available in July?'),
+  ('uuid-message-2', 'uuid-552', 'uuid-553', 'Yes, it is available from July 10th.');
+
+INSERT INTO reviews (review_id, property_id, reviewer_id, rating, comment)
+VALUES
+  ('uuid-review-1', 'uuid-441', 'uuid-553', 5, 'A`mazing stay! Very clean and peaceful.'),
+  ('uuid-review-2', 'uuid-442', 'uuid-553', 4, 'Great location, a bit noisy though.');
+
+INSERT INTO payment_method (method_id, method_name)
+VALUES
+  (1, 'Credit Card'),
+  (2, 'Mobile Money'),
+  (3, 'PayPal');
+
+INSERT INTO payments (payment_id, booking_id, amount, method_id)
+VALUES
+  ('uuid-payment-1', 'uuid-331', 750.00, 1),
+  ('uuid-payment-2', 'uuid-332', 380.00, 2);
