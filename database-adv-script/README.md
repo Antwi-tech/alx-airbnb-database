@@ -182,3 +182,5 @@ GROUP BY p.property_id, p.name;
 ### RESULTS
 ![tot-book](images/win-func.png)
 
+### use or row number
+![row](images/rownum.png)
