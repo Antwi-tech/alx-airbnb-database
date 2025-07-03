@@ -30,3 +30,4 @@ CREATE INDEX idx_messages_recipient_id ON messages(recipient_id);
 CREATE INDEX idx_payments_booking_id ON payments(booking_id);
 CREATE INDEX idx_payments_method_id ON payments(method_id);
 
+EXPLAIN ANALYZE SELECT * FROM bookings WHERE guest_id = 'uuid-553';
