@@ -35,6 +35,9 @@ JOIN payment_method pm
 WHERE b.start_date >= '2024-01-01';
 ```
 
+## Results
+![explained](images/explain-j.png)
+
 ### ⚠️ Issues
 
 - Filtering `p.price_per_night > 0` within the `JOIN` clause may reduce clarity and hinder index usage.
@@ -100,6 +103,8 @@ CREATE INDEX idx_payments_method_id ON payments(method_id);
 CREATE INDEX idx_properties_price ON properties(price_per_night);
 ```
 
+## Results
+![optimized](images/optimized.png)
 ---
 
 ## 📊 Performance Insights with EXPLAIN
