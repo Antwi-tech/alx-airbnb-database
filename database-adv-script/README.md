@@ -117,3 +117,37 @@ ON users.user_id = bookings.guest_id;
 - List all properties with or without reviews ✅
 - Find users who haven't made any bookings ❌
 - Merge all users and bookings for reporting 🧾
+
+## Subqueiries
+1.  The code below allows one to select all properties that have their review above 4.0. In using aggregation in filtering , normally, the subquery is used for the fltering and contains the sub-table to select from
+
+```sql
+SELECT *
+FROM properties
+WHERE property_id IN (
+    SELECT property_id
+    FROM reviews 
+    GROUP BY property_id
+    HAVING AVG(rating) > 4.0
+)
+```
+
+### RESULTS
+![avg](images/avg.png)
+
+
+2. This query displays the results of users who have made more than 3 bookings. As it is seen in the result below , none users have made more than 3 bookings
+
+```sql
+SELECT * 
+FROM users 
+WHERE users.user_id IN (
+    SELECT guest_id
+    FROM bookings 
+    GROUP BY guest_id
+    HAVING COUNT(*) > 3 
+)
+```
+
+### RESULTS
+![user](images/user-book.png)
