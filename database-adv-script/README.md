@@ -151,3 +151,34 @@ WHERE users.user_id IN (
 
 ### RESULTS
 ![user](images/user-book.png)
+
+## Window Function
+
+3. Total Bookings Per User : This query calculates the total number of bookings made by each user (guest_id) using the COUNT() function with the GROUP BY clause.
+
+```sql
+SELECT guest_id, COUNT(*) AS total_bookings
+FROM bookings
+GROUP BY guest_id
+```
+
+### RESULTS
+![tot-book](images/total-book.png)
+
+
+4. This query uses a window function (RANK()) to rank properties based on how many bookings they have received. It uses a LEFT JOIN to include all properties, even those with no bookings.
+
+```sql
+SELECT 
+  p.property_id,
+  p.name,
+  COUNT(b.booking_id) AS total_bookings,
+  RANK() OVER (ORDER BY COUNT(b.booking_id) DESC) AS booking_rank
+FROM properties p
+LEFT JOIN bookings b ON p.property_id = b.property_id
+GROUP BY p.property_id, p.name;
+```
+
+### RESULTS
+![tot-book](images/win-func.png)
+
